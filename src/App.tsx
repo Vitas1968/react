@@ -1,25 +1,18 @@
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { CatalogPage } from './pages/CatalogPage';
 import { FavoritesPage } from './pages/FavoritesPage';
+import { AppHeader } from './components/app_header/AppHeader';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 function App() {
   return (
     <>
-      <header className="app-header">
-        <nav className="app-navigation" aria-label="Основная навигация">
-          <Link className="app-navigation__link" to="/">
-            Каталог
-          </Link>
-
-          <Link className="app-navigation__link" to="/favorites">
-            Избранное
-          </Link>
-        </nav>
-      </header>
+      <AppHeader />
 
       <Routes>
         <Route path="/" element={<CatalogPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

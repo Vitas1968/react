@@ -108,23 +108,3 @@ code {
   background: var(--code-bg);
 }
 
-.app-header {
-  padding: 16px 24px;
-  border-bottom: 1px solid #333;
-}
-
-.app-navigation {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-}
-
-.app-navigation__link {
-  color: #ffffff;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.app-navigation__link:hover {
-  text-decoration: underline;
-}
