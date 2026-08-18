@@ -1,0 +1,70 @@
+.catalog-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.catalog-page__title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.catalog-page__description {
+  margin: 24px 0 0;
+  color: #b8bfd0;
+  font-size: 1.125rem;
+}
+
+.catalog-search-form {
+  display: grid;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.catalog-search-form__label {
+  font-weight: 600;
+}
+
+.catalog-search-form__controls {
+  display: flex;
+  gap: 12px;
+}
+
+.catalog-search-form__input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid #4b5568;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.catalog-search-form__button {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #646cff;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.catalog-search-form__button:hover {
+  background: #535bf2;
+}
+
+.catalog-search-form__input:focus {
+  outline: 2px solid #a5abff;
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .catalog-page {
+    padding: 32px 16px;
+  }
+
+  .catalog-search-form__controls {
+    flex-direction: column;
+  }
+}
