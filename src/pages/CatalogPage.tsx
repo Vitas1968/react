@@ -1,10 +1,15 @@
 import { useState, type SubmitEvent } from 'react';
 import './CatalogPage.css';
 import { searchShows } from '../api/tvMaze';
-import type { TvMazeSearchResult } from '../types/TvMaze';
+import type { TvMazeSearchResult, TvMazeShow } from '../types/TvMaze';
 import { Link } from 'react-router-dom';
 
-export function CatalogPage() {
+type CatalogPageProps = {
+  favorites: TvMazeShow[];
+  onToggleFavorite: (show: TvMazeShow) => void;
+};
+
+export function CatalogPage({ favorites, onToggleFavorite }: CatalogPageProps) {
   const [query, setQuery] = useState('');
   const [submittedQuery, setSubmittedQuery] = useState('');
   const [results, setResults] = useState<TvMazeSearchResult[]>([]);
@@ -69,23 +74,42 @@ export function CatalogPage() {
           <h2>Результаты поиска</h2>
 
           <ul className="search-results__list">
-            {results.map((result) => (
-              <li className="search-results__card" key={result.show.id}>
-                <Link className="search-results__poster-link" to={`/series/${result.show.id}`}>
-                  {result.show.image ? (
-                    <img
-                      className="search-results__image"
-                      src={result.show.image.medium}
-                      alt={`Постер сериала «${result.show.name}»`}
-                    />
-                  ) : (
-                    <div className="search-results__image-placeholder">Нет постера</div>
-                  )}
-                </Link>
+            {results.map((result) => {
+              const { show } = result;
+              const isFavorite = favorites.some((favorite) => favorite.id === show.id);
 
-                <h3 className="search-results__title">{result.show.name}</h3>
-              </li>
-            ))}
+              return (
+                <li className="search-results__card" key={show.id}>
+                  <button
+                    className="search-results__favorite-button"
+                    type="button"
+                    aria-label={
+                      isFavorite
+                        ? `Удалить «${show.name}» из избранного`
+                        : `Добавить «${show.name}» в избранное`
+                    }
+                    aria-pressed={isFavorite}
+                    onClick={() => onToggleFavorite(show)}
+                  >
+                    {isFavorite ? '♥' : '♡'}
+                  </button>
+
+                  <Link className="search-results__poster-link" to={`/series/${show.id}`}>
+                    {show.image ? (
+                      <img
+                        className="search-results__image"
+                        src={show.image.medium}
+                        alt={`Постер сериала «${show.name}»`}
+                      />
+                    ) : (
+                      <div className="search-results__image-placeholder">Нет постера</div>
+                    )}
+                  </Link>
+
+                  <h3 className="search-results__title">{show.name}</h3>
+                </li>
+              );
+            })}
           </ul>
         </section>
       )}
