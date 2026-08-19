@@ -109,3 +109,7 @@
   padding: 12px;
   font-size: 1rem;
 }
+
+.search-results__poster-link {
+  display: block;
+}

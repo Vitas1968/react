@@ -2,6 +2,7 @@ import { useState, type SubmitEvent } from 'react';
 import './CatalogPage.css';
 import { searchShows } from '../api/tvMaze';
 import type { TvMazeSearchResult } from '../types/TvMaze';
+import { Link } from 'react-router-dom';
 
 export function CatalogPage() {
   const [query, setQuery] = useState('');
@@ -70,15 +71,17 @@ export function CatalogPage() {
           <ul className="search-results__list">
             {results.map((result) => (
               <li className="search-results__card" key={result.show.id}>
-                {result.show.image ? (
-                  <img
-                    className="search-results__image"
-                    src={result.show.image.medium}
-                    alt={`Постер сериала «${result.show.name}»`}
-                  />
-                ) : (
-                  <div className="search-results__image-placeholder">Нет постера</div>
-                )}
+                <Link className="search-results__poster-link" to={`/series/${result.show.id}`}>
+                  {result.show.image ? (
+                    <img
+                      className="search-results__image"
+                      src={result.show.image.medium}
+                      alt={`Постер сериала «${result.show.name}»`}
+                    />
+                  ) : (
+                    <div className="search-results__image-placeholder">Нет постера</div>
+                  )}
+                </Link>
 
                 <h3 className="search-results__title">{result.show.name}</h3>
               </li>

@@ -1,0 +1,48 @@
+.series-details-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  text-align: left;
+}
+
+.series-details {
+  display: grid;
+  grid-template-columns: minmax(0, 260px) 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.series-details__image,
+.series-details__image-placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.series-details__image-placeholder {
+  display: grid;
+  place-items: center;
+  background: #262936;
+  color: #b8bfd0;
+}
+
+.series-details__title {
+  margin-top: 0;
+}
+
+.series-details__summary {
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .series-details {
+    grid-template-columns: 1fr;
+  }
+
+  .series-details__image,
+  .series-details__image-placeholder {
+    max-width: 260px;
+  }
+}
