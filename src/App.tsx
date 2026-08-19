@@ -5,10 +5,13 @@ import { FavoritesPage } from './pages/FavoritesPage';
 import { AppHeader } from './components/app_header/AppHeader';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { SeriesDetailsPage } from './pages/SeriesDetailsPage';
-import type { TvMazeShow } from './types/TvMaze';
+import type { TvMazeSearchResult, TvMazeShow } from './types/TvMaze';
 
 function App() {
   const [favorites, setFavorites] = useState<TvMazeShow[]>([]);
+  const [query, setQuery] = useState('');
+  const [submittedQuery, setSubmittedQuery] = useState('');
+  const [results, setResults] = useState<TvMazeSearchResult[]>([]);
 
   function toggleFavorite(show: TvMazeShow) {
     setFavorites((currentFavorites) => {
@@ -29,7 +32,18 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<CatalogPage favorites={favorites} onToggleFavorite={toggleFavorite} />}
+          element={
+            <CatalogPage
+              query={query}
+              submittedQuery={submittedQuery}
+              results={results}
+              favorites={favorites}
+              onQueryChange={setQuery}
+              onSubmittedQueryChange={setSubmittedQuery}
+              onResultsChange={setResults}
+              onToggleFavorite={toggleFavorite}
+            />
+          }
         />
         <Route path="/series/:seriesId" element={<SeriesDetailsPage />} />
         <Route

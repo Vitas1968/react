@@ -1,18 +1,30 @@
 import { useState, type SubmitEvent } from 'react';
-import './CatalogPage.css';
+import { Link } from 'react-router-dom';
 import { searchShows } from '../api/tvMaze';
 import type { TvMazeSearchResult, TvMazeShow } from '../types/TvMaze';
-import { Link } from 'react-router-dom';
+import './CatalogPage.css';
 
 type CatalogPageProps = {
+  query: string;
+  submittedQuery: string;
+  results: TvMazeSearchResult[];
   favorites: TvMazeShow[];
+  onQueryChange: (value: string) => void;
+  onSubmittedQueryChange: (value: string) => void;
+  onResultsChange: (results: TvMazeSearchResult[]) => void;
   onToggleFavorite: (show: TvMazeShow) => void;
 };
 
-export function CatalogPage({ favorites, onToggleFavorite }: CatalogPageProps) {
-  const [query, setQuery] = useState('');
-  const [submittedQuery, setSubmittedQuery] = useState('');
-  const [results, setResults] = useState<TvMazeSearchResult[]>([]);
+export function CatalogPage({
+  query,
+  submittedQuery,
+  results,
+  favorites,
+  onQueryChange,
+  onSubmittedQueryChange,
+  onResultsChange,
+  onToggleFavorite,
+}: CatalogPageProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
@@ -24,14 +36,15 @@ export function CatalogPage({ favorites, onToggleFavorite }: CatalogPageProps) {
       return;
     }
 
-    setSubmittedQuery(normalizedQuery);
+    onSubmittedQueryChange(normalizedQuery);
     setIsLoading(true);
+
     try {
-      const results = await searchShows(normalizedQuery);
-      setResults(results);
+      const foundShows = await searchShows(normalizedQuery);
+      onResultsChange(foundShows);
     } catch (error) {
       console.error('Не удалось выполнить поиск:', error);
-      setResults([]);
+      onResultsChange([]);
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +69,7 @@ export function CatalogPage({ favorites, onToggleFavorite }: CatalogPageProps) {
             placeholder="Например, Breaking Bad"
             required
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => onQueryChange(event.target.value)}
           />
 
           <button className="catalog-search-form__button" type="submit" disabled={isLoading}>
@@ -64,11 +77,13 @@ export function CatalogPage({ favorites, onToggleFavorite }: CatalogPageProps) {
           </button>
         </div>
       </form>
+
       {submittedQuery && (
         <p className="catalog-page__result-message">
           Будем искать сериал: <strong>{submittedQuery}</strong>
         </p>
       )}
+
       {results.length > 0 && (
         <section className="search-results">
           <h2>Результаты поиска</h2>
